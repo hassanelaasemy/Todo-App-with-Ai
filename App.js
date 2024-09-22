@@ -13,7 +13,9 @@ import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as splash from "expo-splash-screen";
 
+splash.preventAutoHideAsync();
 export default function App() {
   const [todos, setTodos] = useState([]);
   const [inputText, setInputText] = useState("");
@@ -23,6 +25,12 @@ export default function App() {
   const fadeAnim = useRef(new Animated.Value(1)).current;
   useEffect(() => {
     loadTodos();
+    const timer = setTimeout(() => {
+      splash.hideAsync();
+    }, 2000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
   useEffect(() => {
     saveTodos();
